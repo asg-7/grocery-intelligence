@@ -24,14 +24,25 @@ export async function GET(req: NextRequest) {
         with_vector: true,
       } as any);
 
-      // batch may be an array or an object with .result and .next_page_offset
-      const hits = Array.isArray(batch) ? batch : batch.result ?? batch;
+      // Normalize batch shapes returned by different client versions
+      const extractHits = (b: any) => {
+        if (!b) return null;
+        if (Array.isArray(b)) return b;
+        if (Array.isArray(b.result)) return b.result;
+        if (Array.isArray(b.data?.result)) return b.data.result;
+        if (Array.isArray(b.result?.result)) return b.result.result;
+        if (Array.isArray(b.result?.points)) return b.result.points;
+        if (Array.isArray(b.data)) return b.data;
+        return null;
+      };
+
+      const hits = extractHits(batch);
       if (!hits || hits.length === 0) break;
 
       points.push(...hits);
 
       // Determine next offset if provided by client
-      offset = batch.next_page_offset ?? batch.next_page ?? null;
+      offset = batch.next_page_offset ?? batch.next_page ?? batch.offset ?? null;
       if (!offset) break;
     }
 
