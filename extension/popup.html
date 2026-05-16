@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Grocery Buddy</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 12px; width: 320px; }
+    textarea { width: 100%; height: 120px; margin-bottom: 8px; }
+    button { padding: 8px 10px; background: #ff6a00; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+    .row { display:flex; gap:8px; }
+  </style>
+</head>
+<body>
+  <h3>Grocery Buddy</h3>
+  <p>Enter one product name per line, then click <strong>Save list</strong>.</p>
+  <textarea id="product-list" placeholder="Basmati Rice\nBrown Rice\nGreek Yogurt"></textarea>
+  <div class="row">
+    <button id="save-list">Save list</button>
+    <button id="open-site">Open Blinkit</button>
+  </div>
+  <script>
+    document.getElementById('save-list').addEventListener('click', () => {
+      const raw = document.getElementById('product-list').value;
+      const products = raw.split('\n').map(s => s.trim()).filter(Boolean).map(name => ({ name }));
+      chrome.storage.local.set({ pendingCart: products }, () => {
+        alert('Saved ' + products.length + ' products to extension storage.');
+      });
+    });
+
+    document.getElementById('open-site').addEventListener('click', () => {
+      chrome.tabs.create({ url: 'https://www.blinkit.com' });
+    });
+  </script>
+</body>
+</html>
