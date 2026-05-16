@@ -1,14 +1,13 @@
-import dotenv from 'dotenv'
-import path from 'path'
-
-dotenv.config({ path: path.resolve(process.cwd(), '.env.local') })
+// Note: In Next.js, .env.local is loaded automatically.
+// For standalone scripts, use dotenv/config at the script entry point.
 
 // Free embedding fallback runner
 let localPipeline: any = null;
 
 export async function embedText(text: string): Promise<number[]> {
-  // If you don't have an OpenAI key, run the free transformers model locally!
-  if (!process.env.OPENAI_API_KEY) {
+  // Use local model if no real OpenAI key is configured
+  const openaiKey = process.env.OPENAI_API_KEY;
+  if (!openaiKey || !openaiKey.startsWith('sk-')) {
     if (!localPipeline) {
       // Dynamically load the transformer pipeline to keep things fast
       const { pipeline } = await import('@xenova/transformers');

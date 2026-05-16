@@ -6,4 +6,4 @@ export const qdrant = new QdrantClient({
 })
 
 export const COLLECTION_NAME = 'products'
-export const EMBEDDING_SIZE = 1536 // Standard size for OpenAI text-embedding-3-small
+export const EMBEDDING_SIZE = 384 // Matches Xenova/all-MiniLM-L6-v2 local pipeline
