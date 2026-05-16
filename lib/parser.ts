@@ -120,8 +120,8 @@ ${ingredients.map((s, i) => `${i + 1}. ${s}`).join("\n")}`;
   });
 
   const text = msg.content
-    .filter((b): b is { type: "text"; text: string } => b.type === "text")
-    .map((b) => b.text)
+    .filter((b) => (b as any).type === "text")
+    .map((b: any) => (b as any).text)
     .join("");
 
   // Extract JSON array from response
