@@ -67,7 +67,7 @@ export default function MapPage() {
     <div style={{ padding: 8 }}>
       <h2>Semantic Product Map</h2>
       <div>
-        <Plot data={traces} layout={layout} style={{ width: '100%' }} config={{ responsive: true }} />
+        <Plot data={traces as any} layout={layout as any} style={{ width: '100%' }} config={{ responsive: true }} />
       </div>
     </div>
   );
