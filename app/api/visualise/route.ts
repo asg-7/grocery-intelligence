@@ -98,6 +98,9 @@ export async function GET(req: NextRequest) {
     }
 
     // Map embeddings back to points
+    if (!embedding) {
+      return NextResponse.json({ points: [] });
+    }
     const out: PointResp[] = [];
     for (let i = 0; i < embedding.length; i++) {
       const e = embedding[i];
