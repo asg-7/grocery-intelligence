@@ -41,8 +41,9 @@ export async function GET(req: NextRequest) {
 
       points.push(...hits);
 
-      // Determine next offset if provided by client
-      offset = batch.next_page_offset ?? batch.next_page ?? batch.offset ?? null;
+      // Determine next offset if provided by client (use any to satisfy varying client shapes)
+      const nextOffset = (batch as any).next_page_offset ?? (batch as any).next_page ?? (batch as any).offset ?? null;
+      offset = nextOffset;
       if (!offset) break;
     }
 

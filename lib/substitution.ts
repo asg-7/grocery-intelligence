@@ -35,7 +35,7 @@ Candidates:\n${candidateListText}
 
 Task: From the candidate list, pick the single best substitute for the original product. Consider similarity of product type, category, brand, price, and dietary tags. Exclude any candidate that is on hold. If multiple candidates are similar, prefer the one closest in category and dietary compatibility; mention any tradeoffs (price, brand, texture, taste) briefly.
 
-Return a JSON object only with these keys: `chosen_product` (an object with `name`, `brand` (if available), `price` (if available), and `supabase_id` (if known or null)), and `explanation` (a short human-readable paragraph that MUST mention both the original product name and the chosen product name).
+Return a JSON object only with these keys: "chosen_product" (an object with "name", "brand" (if available), "price" (if available), and "supabase_id" (if known or null)), and "explanation" (a short human-readable paragraph that MUST mention both the original product name and the chosen product name).
 
 Reason for substitution (user provided): ${reason ?? "none"}
 
