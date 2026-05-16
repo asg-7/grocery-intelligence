@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Plot from 'react-plotly.js';
+import dynamic from 'next/dynamic';
+const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 
 type Point = { id: string | number; x: number; y: number; name?: string; category?: string; price?: number | null };
 
