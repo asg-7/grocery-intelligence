@@ -2,6 +2,28 @@
 (function () {
   console.log('Grocery Buddy content script loaded');
 
+  // If the URL contains a `products` query param, bootstrap pendingCart and start autofill
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('products')) {
+      const raw = params.get('products') || '';
+      const decoded = decodeURIComponent(raw);
+      const names = decoded.split(',').map(s => s.trim()).filter(Boolean);
+      if (names.length > 0) {
+        const products = names.map(n => ({ name: n }));
+        chrome.storage.local.set({ pendingCart: products }, () => {
+          console.log('Grocery Buddy: pendingCart initialized from URL params', products);
+          // Give the page a moment to finish loading before starting
+          setTimeout(() => {
+            try { startAutoFill(); } catch (e) { console.warn('Grocery Buddy: failed to auto-start', e); }
+          }, 1200);
+        });
+      }
+    }
+  } catch (e) {
+    console.warn('Grocery Buddy: error parsing URL params', e);
+  }
+
   function createButton() {
     if (document.getElementById('grocery-buddy-button')) return;
     const btn = document.createElement('button');
